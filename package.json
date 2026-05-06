@@ -1,0 +1,11 @@
+{
+  "name": "line-chore-bot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "preview": "node chore-bot.mjs --preview",
+    "send": "node chore-bot.mjs",
+    "test": "node --test chore-core.test.mjs"
+  }
+}

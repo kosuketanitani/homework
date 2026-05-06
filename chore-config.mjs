@@ -1,0 +1,101 @@
+export const choreConfig = {
+  timezone: "Asia/Tokyo",
+  title: "きょうの家事にゃん",
+  footer: "よろしくにゃ。",
+  members: [
+    "こうすけ",
+    "えり",
+  ],
+  chores: [
+    {
+      id: "cook-dinner",
+      label: "夜ご飯料理",
+      points: 4,
+      schedule: { type: "daily" },
+    },
+    {
+      id: "shopping",
+      label: "買い出し",
+      points: 4,
+      schedule: { type: "everyNDays", interval: 2, offset: 0 },
+    },
+    {
+      id: "laundry-start",
+      label: "洗濯（回す・干す）",
+      points: 3,
+      schedule: { type: "everyNDays", interval: 2, offset: 1 },
+    },
+    {
+      id: "laundry-finish",
+      label: "洗濯（取り込む・たたむ）",
+      points: 2,
+      schedule: { type: "everyNDays", interval: 2, offset: 0 },
+    },
+    {
+      id: "dishwashing",
+      label: "皿洗い",
+      points: 3,
+      schedule: { type: "daily" },
+    },
+    {
+      id: "vacuum",
+      label: "掃除機",
+      points: 4,
+      schedule: { type: "weekly", weekday: 3 },
+    },
+    {
+      id: "toilet",
+      label: "トイレ掃除",
+      points: 4,
+      schedule: { type: "weekly", weekday: 4 },
+    },
+    {
+      id: "bathroom",
+      label: "風呂掃除",
+      points: 4,
+      schedule: { type: "weekly", weekday: 5 },
+    },
+    {
+      id: "kitchen-sink",
+      label: "キッチン（シンク）掃除",
+      points: 3,
+      schedule: { type: "weekly", weekday: 2 },
+    },
+    {
+      id: "room-reset",
+      label: "部屋の全体的な片付け",
+      points: 4,
+      schedule: { type: "weeklyAlternatingWeekend", startWith: 6 },
+    },
+    {
+      id: "garbage-general-wed",
+      label: "ゴミ捨て（燃えるゴミ）",
+      points: 3,
+      schedule: { type: "weekly", weekday: 3 },
+    },
+    {
+      id: "garbage-general-sat",
+      label: "ゴミ捨て（燃えるゴミ）",
+      points: 3,
+      schedule: { type: "weekly", weekday: 6 },
+    },
+    {
+      id: "garbage-recycle",
+      label: "ゴミ捨て（びん・かん・ペットボトル系）",
+      points: 3,
+      schedule: { type: "biweekly", weekday: 2, offset: 0 },
+    },
+    {
+      id: "garbage-plastic",
+      label: "ゴミ捨て（容器包装プラ）",
+      points: 3,
+      schedule: { type: "biweekly", weekday: 5, offset: 1 },
+    },
+    {
+      id: "garbage-battery",
+      label: "ゴミ捨て（乾電池）",
+      points: 2,
+      schedule: { type: "biweekly", weekday: 6, offset: 0 },
+    },
+  ],
+};
