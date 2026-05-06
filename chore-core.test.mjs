@@ -71,7 +71,6 @@ test("message contains points and rules", () => {
   assert.match(text, /今日:/);
   assert.match(text, /皿洗い/);
   assert.match(text, /おはようにゃ/);
-  assert.match(text, /\/\\_\/\\\\/);
-  assert.match(text, /""   ""/);
   assert.doesNotMatch(text, /今週:/);
+  assert.doesNotMatch(text, /\(\d+pt\)/);
 });

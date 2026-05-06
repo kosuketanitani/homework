@@ -193,12 +193,6 @@ function formatMessage(parts, assignments, config) {
     }),
   }));
   const lines = [
-    " /\\_/\\\\",
-    "( o.o )",
-    " > ^ <",
-    " /  _  \\\\",
-    "(  / \\  )",
-    ' ""   ""',
     `【${parts.year}/${String(parts.month).padStart(2, "0")}/${String(parts.day).padStart(2, "0")}（${weekdayJa}） ${config.title}】`,
     "",
     "おはようにゃ。",
@@ -213,7 +207,7 @@ function formatMessage(parts, assignments, config) {
     }
 
     const choreText = assignment.chores
-      .map((chore) => `${chore.label}(${chore.points}pt)`)
+      .map((chore) => chore.label)
       .join("、");
 
     lines.push(`・${assignment.member} 今日:${assignment.totalPoints}pt`);
@@ -224,7 +218,7 @@ function formatMessage(parts, assignments, config) {
     lines.push("");
     lines.push("二人で");
     for (const chore of sharedAssignments) {
-      lines.push(`・${chore.label}(${chore.points}pt)`);
+      lines.push(`・${chore.label}`);
     }
   }
 
