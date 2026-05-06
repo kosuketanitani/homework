@@ -199,18 +199,24 @@ function formatMessage(parts, assignments, config) {
     "",
   ];
 
-  for (const assignment of personalAssignments) {
+  personalAssignments.forEach((assignment, index) => {
     if (assignment.chores.length === 0) {
       lines.push(`・${assignment.member} 今日:0pt`);
       lines.push("  きょうはおやすみにゃ");
-      continue;
+      if (index < personalAssignments.length - 1) {
+        lines.push("");
+      }
+      return;
     }
 
     lines.push(`・${assignment.member} 今日:${assignment.totalPoints}pt`);
     for (const chore of assignment.chores) {
       lines.push(`  ・${chore.label}`);
     }
-  }
+    if (index < personalAssignments.length - 1) {
+      lines.push("");
+    }
+  });
 
   if (sharedAssignments.length > 0) {
     lines.push("");
