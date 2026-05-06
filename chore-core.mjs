@@ -102,6 +102,7 @@ function createPlannerState(config) {
       },
     ])),
     lastDinnerAssignee: null,
+    linkedAssignments: new Map(),
   };
 }
 
@@ -150,9 +151,13 @@ export function assignChores(parts, config = choreConfig, scores = createPlanner
       .sort((left, right) => compareMembers(left[1], right[1]))
       .map(([member]) => member);
 
+    const previousLinkedAssignee = chore.linkedTo
+      ? plannerState.linkedAssignments.get(chore.linkedTo) ?? null
+      : null;
+
     const member = chore.id === "cook-dinner"
       ? rankedMembers.find((candidate) => candidate !== plannerState.lastDinnerAssignee) ?? rankedMembers[0]
-      : rankedMembers[0];
+      : rankedMembers.find((candidate) => candidate !== previousLinkedAssignee) ?? rankedMembers[0];
 
     assignments.get(member).push(chore);
     const state = plannerState.scores.get(member);
@@ -161,6 +166,10 @@ export function assignChores(parts, config = choreConfig, scores = createPlanner
 
     if (chore.id === "cook-dinner") {
       plannerState.lastDinnerAssignee = member;
+    }
+
+    if (chore.linkedTo) {
+      plannerState.linkedAssignments.set(chore.id, member);
     }
   }
 

@@ -5,7 +5,14 @@ import { assignChores, buildMessage, buildMessagesForRange, getJstParts, getToda
 test("tuesday includes recycling and sink cleaning", () => {
   const parts = getJstParts(new Date("2026-05-12T00:00:00+09:00"));
   const chores = getTodaysChores(parts).map((chore) => chore.label);
-  assert.deepEqual(chores.sort(), ["キッチン（シンク）掃除", "ゴミ捨て（びん・かん・ペットボトル系）", "夜ご飯料理", "皿洗い", "洗濯（回す・干す）"].sort());
+  assert.deepEqual(chores.sort(), [
+    "キッチン（シンク）掃除",
+    "ゴミ捨て（びん・かん・ペットボトル系）",
+    "ゴミ準備（燃えるゴミをまとめて玄関へ）",
+    "夜ご飯料理",
+    "皿洗い",
+    "洗濯（回す・干す）",
+  ].sort());
 });
 
 test("saturday includes alternating weekend room reset", () => {
@@ -14,6 +21,12 @@ test("saturday includes alternating weekend room reset", () => {
   assert.match(chores.join(","), /部屋の全体的な片付け/);
   assert.match(chores.join(","), /ゴミ捨て（燃えるゴミ）/);
   assert.doesNotMatch(chores.join(","), /乾電池/);
+});
+
+test("day before collection includes garbage prep task", () => {
+  const parts = getJstParts(new Date("2026-05-11T00:00:00+09:00"));
+  const chores = getTodaysChores(parts).map((chore) => chore.label);
+  assert.match(chores.join(","), /ゴミ準備（びん・かん・ペットボトル系をまとめて玄関へ）/);
 });
 
 test("weighted assignment stays balanced for two members", () => {
@@ -61,6 +74,23 @@ test("dinner assignment does not repeat on consecutive days when avoidable", () 
   for (let index = 1; index < dinnerAssignees.length; index += 1) {
     assert.notEqual(dinnerAssignees[index], dinnerAssignees[index - 1]);
   }
+});
+
+test("garbage prep and garbage drop are assigned to different members", () => {
+  const messages = buildMessagesForRange(new Date("2026-05-11T00:00:00+09:00"), 3);
+  const prepDay = messages[0];
+  const dropDay = messages[1];
+
+  const prepOwner = prepDay.assignments.find((assignment) =>
+    assignment.chores.some((chore) => chore.id === "garbage-prep-recycle")
+  )?.member;
+  const dropOwner = dropDay.assignments.find((assignment) =>
+    assignment.chores.some((chore) => chore.id === "garbage-recycle")
+  )?.member;
+
+  assert.ok(prepOwner);
+  assert.ok(dropOwner);
+  assert.notEqual(prepOwner, dropOwner);
 });
 
 test("message contains points and rules", () => {
