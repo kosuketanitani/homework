@@ -206,12 +206,10 @@ function formatMessage(parts, assignments, config) {
       continue;
     }
 
-    const choreText = assignment.chores
-      .map((chore) => chore.label)
-      .join("、");
-
     lines.push(`・${assignment.member} 今日:${assignment.totalPoints}pt`);
-    lines.push(`  ${choreText}`);
+    for (const chore of assignment.chores) {
+      lines.push(`  ・${chore.label}`);
+    }
   }
 
   if (sharedAssignments.length > 0) {
