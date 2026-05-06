@@ -16,7 +16,7 @@ export const choreConfig = {
     {
       id: "shopping",
       label: "買い出し",
-      points: 4,
+      points: 3,
       schedule: { type: "everyNDays", interval: 2, offset: 0 },
     },
     {
@@ -34,19 +34,19 @@ export const choreConfig = {
     {
       id: "dishwashing",
       label: "皿洗い",
-      points: 3,
+      points: 2,
       schedule: { type: "daily" },
     },
     {
       id: "vacuum",
       label: "掃除機",
-      points: 4,
+      points: 3,
       schedule: { type: "weekly", weekday: 3 },
     },
     {
       id: "toilet",
       label: "トイレ掃除",
-      points: 4,
+      points: 3,
       schedule: { type: "weekly", weekday: 4 },
     },
     {
@@ -58,44 +58,39 @@ export const choreConfig = {
     {
       id: "kitchen-sink",
       label: "キッチン（シンク）掃除",
-      points: 3,
+      points: 2,
       schedule: { type: "weekly", weekday: 2 },
     },
     {
       id: "room-reset",
       label: "部屋の全体的な片付け",
-      points: 4,
+      points: 3,
+      shared: true,
       schedule: { type: "weeklyAlternatingWeekend", startWith: 6 },
     },
     {
       id: "garbage-general-wed",
       label: "ゴミ捨て（燃えるゴミ）",
-      points: 3,
+      points: 2,
       schedule: { type: "weekly", weekday: 3 },
     },
     {
       id: "garbage-general-sat",
       label: "ゴミ捨て（燃えるゴミ）",
-      points: 3,
+      points: 2,
       schedule: { type: "weekly", weekday: 6 },
     },
     {
       id: "garbage-recycle",
       label: "ゴミ捨て（びん・かん・ペットボトル系）",
-      points: 3,
+      points: 2,
       schedule: { type: "biweekly", weekday: 2, offset: 0 },
     },
     {
       id: "garbage-plastic",
       label: "ゴミ捨て（容器包装プラ）",
-      points: 3,
-      schedule: { type: "biweekly", weekday: 5, offset: 1 },
-    },
-    {
-      id: "garbage-battery",
-      label: "ゴミ捨て（乾電池）",
       points: 2,
-      schedule: { type: "biweekly", weekday: 6, offset: 0 },
+      schedule: { type: "biweekly", weekday: 5, offset: 1 },
     },
   ],
 };

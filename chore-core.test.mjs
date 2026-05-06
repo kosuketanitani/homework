@@ -13,7 +13,7 @@ test("saturday includes alternating weekend room reset", () => {
   const chores = getTodaysChores(parts).map((chore) => chore.label);
   assert.match(chores.join(","), /部屋の全体的な片付け/);
   assert.match(chores.join(","), /ゴミ捨て（燃えるゴミ）/);
-  assert.match(chores.join(","), /ゴミ捨て（乾電池）/);
+  assert.doesNotMatch(chores.join(","), /乾電池/);
 });
 
 test("weighted assignment stays balanced for two members", () => {
@@ -39,6 +39,16 @@ test("weekly cumulative assignment stays close over seven days", () => {
   assert.ok(Math.abs(totals.get("こうすけ") - totals.get("えり")) <= 3);
 });
 
+test("shared room reset is assigned to both members", () => {
+  const messages = buildMessagesForRange(new Date("2026-05-05T00:00:00+09:00"), 7);
+  const saturday = messages.find((message) => message.parts.weekday === 6);
+  const owners = saturday.assignments.filter((assignment) =>
+    assignment.chores.some((chore) => chore.id === "room-reset")
+  );
+  assert.equal(owners.length, 2);
+  assert.match(saturday.text, /二人で/);
+});
+
 test("dinner assignment does not repeat on consecutive days when avoidable", () => {
   const messages = buildMessagesForRange(new Date("2026-05-05T00:00:00+09:00"), 7);
   const dinnerAssignees = messages.map((message) => {
@@ -58,9 +68,10 @@ test("message contains points and rules", () => {
   assert.match(text, /こうすけ/);
   assert.match(text, /えり/);
   assert.match(text, /2026\/05\/05（火）/);
-  assert.match(text, /今週:/);
+  assert.match(text, /今日:/);
   assert.match(text, /皿洗い/);
   assert.match(text, /おはようにゃ/);
   assert.match(text, /\/\\_\/\\\\/);
   assert.match(text, /""   ""/);
+  assert.doesNotMatch(text, /今週:/);
 });

@@ -136,6 +136,16 @@ export function assignChores(parts, config = choreConfig, scores = createPlanner
   const assignments = new Map(config.members.map((member) => [member, []]));
 
   for (const chore of chores) {
+    if (chore.shared) {
+      for (const member of config.members) {
+        assignments.get(member).push(chore);
+        const state = plannerState.scores.get(member);
+        state.weeklyPoints += chore.points;
+        state.weeklyAssignedCount += 1;
+      }
+      continue;
+    }
+
     const rankedMembers = [...plannerState.scores.entries()]
       .sort((left, right) => compareMembers(left[1], right[1]))
       .map(([member]) => member);
@@ -169,6 +179,19 @@ export function buildMessage(date = new Date(), config = choreConfig) {
 
 function formatMessage(parts, assignments, config) {
   const weekdayJa = ["日", "月", "火", "水", "木", "金", "土"][parts.weekday];
+  const sharedAssignments = [];
+  const personalAssignments = assignments.map((assignment) => ({
+    ...assignment,
+    chores: assignment.chores.filter((chore) => {
+      if (chore.shared) {
+        if (!sharedAssignments.some((item) => item.id === chore.id)) {
+          sharedAssignments.push(chore);
+        }
+        return false;
+      }
+      return true;
+    }),
+  }));
   const lines = [
     " /\\_/\\\\",
     "( o.o )",
@@ -182,9 +205,9 @@ function formatMessage(parts, assignments, config) {
     "",
   ];
 
-  for (const assignment of assignments) {
+  for (const assignment of personalAssignments) {
     if (assignment.chores.length === 0) {
-      lines.push(`・${assignment.member} 今日:0pt / 今週:${assignment.weeklyPoints}pt`);
+      lines.push(`・${assignment.member} 今日:0pt`);
       lines.push("  きょうはおやすみにゃ");
       continue;
     }
@@ -193,8 +216,16 @@ function formatMessage(parts, assignments, config) {
       .map((chore) => `${chore.label}(${chore.points}pt)`)
       .join("、");
 
-    lines.push(`・${assignment.member} 今日:${assignment.totalPoints}pt / 今週:${assignment.weeklyPoints}pt`);
+    lines.push(`・${assignment.member} 今日:${assignment.totalPoints}pt`);
     lines.push(`  ${choreText}`);
+  }
+
+  if (sharedAssignments.length > 0) {
+    lines.push("");
+    lines.push("二人で");
+    for (const chore of sharedAssignments) {
+      lines.push(`・${chore.label}(${chore.points}pt)`);
+    }
   }
 
   lines.push("");
